@@ -10,7 +10,8 @@ export default class LoginScreen extends React.Component {
     // Initialize our login state
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      errorMsg: ""
     }
   }
   // On our button press, attempt to login
@@ -30,16 +31,25 @@ export default class LoginScreen extends React.Component {
     })
     .then(response => response.json())
     .then(json => {
-      console.log(`Logging in with session token: ${json.token}`);
+      //If the json.token exists, store and handle it. Else display error.
+      if(json.token)
+      {
+        console.log(`Logging in with session token: ${json.token}`);
 
-      // enter login logic here
-      SecureStore.setItemAsync('session', json.token).then(() => {
-        this.props.route.params.onLoggedIn();
-      });
+        SecureStore.setItemAsync('session', json.token).then(() => {
+          this.props.route.params.onLoggedIn();
+        });
+      }
+      else{
+        console.log("Token exception");
+        this.setState({errorMsg: "Invalid Login, Please Try Again."});
+      }
     })
     .catch(exception => {
         console.log("Error occured", exception);
         // Do something when login fails
+        this.setState({errorMsg: "Unable to Contact Server, Please Restart the App."});
+
     })
   }
   render() {
@@ -50,6 +60,7 @@ export default class LoginScreen extends React.Component {
     return (
       <View style={styles.container}>
         <Text style={styles.loginText}>Log-in</Text>
+        <Text style={styles.errorText}>{this.state.errorMsg}</Text>
         <TextInput
           style={styles.input}
           placeholder="Email"
@@ -85,6 +96,11 @@ const styles = StyleSheet.create({
     color: "#ffff",
     textAlign: "center",
     marginBottom: 30
+  },
+  errorText: {
+    fontSize: 30,
+    color: "#ff0000",
+    textAlign: "center"
   },
   appButtonContainer: {
     elevation: 8,
