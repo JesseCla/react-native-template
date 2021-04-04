@@ -33,7 +33,7 @@ HomeScreen.navigationOptions = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#010423',
   },
   contentContainer: {
     padding: 20,
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 2,
     elevation: 2,
-    backgroundColor: 'white',
+    backgroundColor: '#1db954',
     padding: 10,
     marginBottom: 10
   },

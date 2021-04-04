@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity} from 'react-native';
 
 import * as SecureStore from 'expo-secure-store';
 
@@ -49,21 +49,25 @@ export default class LoginScreen extends React.Component {
     // the user will never know if the login failed.
     return (
       <View style={styles.container}>
-        <Text style={styles.loginText}>Login</Text>
+        <Text style={styles.loginText}>Log-in</Text>
         <TextInput
           style={styles.input}
+          placeholder="Email"
           onChangeText={text => this.setState({ email: text })}
           value={email}
           textContentType="emailAddress"
         />
         <TextInput
           style={styles.input}
+          placeholder="Password"
           onChangeText={text => this.setState({ password: text })}
           value={password}
           textContentType="password"
           secureTextEntry={true}
         />
-        <Button title="Submit" onPress={() => this.onSubmit()} />
+        <TouchableOpacity onPress={() => this.onSubmit()} style={styles.appButtonContainer}>
+          <Text style={styles.appButtonText}>{"Submit"}</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -78,15 +82,30 @@ const styles = StyleSheet.create({
   },
   loginText: {
     fontSize: 30,
-    color: "#010423",
+    color: "#ffff",
     textAlign: "center",
     marginBottom: 30
+  },
+  appButtonContainer: {
+    elevation: 8,
+    backgroundColor: "#1db954",
+    borderRadius: 50,
+    paddingVertical: 10,
+    paddingHorizontal: 12
+  },
+  appButtonText: {
+    fontSize: 18,
+    color: "#fff",
+    fontWeight: "bold",
+    alignSelf: "center",
+    textTransform: "uppercase"
   },
   input: {
     height: 40,
     backgroundColor: '#ffff',
-    borderColor: 'white',
+    borderRadius: 50,
     borderWidth: 1,
-    marginBottom: 20
-  }
+    marginBottom: 20,
+    paddingHorizontal: 15
+  },
 });
