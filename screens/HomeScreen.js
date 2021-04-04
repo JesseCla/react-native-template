@@ -8,8 +8,11 @@ import { MonoText } from '../components/StyledText';
 export default class HomeScreen extends React.Component {
   constructor() {
     super()
+    this.state = {
+      session: null
+    }
 
-    console.log("HI! I need some state here so I can show lots o' posts!")
+    console.log("HI! I need some state here so I can show lots o' posts!");
   }
 
   render() {
@@ -51,9 +54,11 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     fontSize: 20,
+    color: '#ffff',
     marginBottom: 10
   },
   cardDescription: {
-    fontSize: 12
+    fontSize: 12,
+    color: '#ffff',
   },
 });
