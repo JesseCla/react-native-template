@@ -1,57 +1,61 @@
 import * as React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
-import { SplashScreen } from 'expo';
-import * as Font from 'expo-font';
-import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import BottomTabNavigator from './navigation/BottomTabNavigator';
-import useLinking from './navigation/useLinking';
+import LoginScreen from './screens/LoginScreen';
+
+import * as SecureStore from 'expo-secure-store';
 
 const Stack = createStackNavigator();
 
-export default function App(props) {
-  const [isLoadingComplete, setLoadingComplete] = React.useState(false);
-  const [initialNavigationState, setInitialNavigationState] = React.useState();
-  const containerRef = React.useRef();
-  const { getInitialState } = useLinking(containerRef);
+export default class App extends React.Component {
+  constructor() {
+    super()
 
-  // Load any resources or data that we need prior to rendering the app
-  React.useEffect(() => {
-    async function loadResourcesAndDataAsync() {
-      try {
-        SplashScreen.preventAutoHide();
-
-        // Load our initial navigation state
-        setInitialNavigationState(await getInitialState());
-
-        // Load fonts
-        await Font.loadAsync({
-          ...Ionicons.font,
-          'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
-        });
-      } catch (e) {
-        // We might want to provide this error information to an error reporting service
-        console.warn(e);
-      } finally {
-        setLoadingComplete(true);
-        SplashScreen.hide();
-      }
+    this.state = {
+      session: null
     }
 
-    loadResourcesAndDataAsync();
-  }, []);
+    // uncomment this if you'd like to require a login every time the app is started
+    SecureStore.deleteItemAsync('session')
+  }
+  componentDidMount() {
+    // Check if there's a session when the app loads
+    this.checkIfLoggedIn();
+  }
+  checkIfLoggedIn = () => {
+    // See if there's a session data stored on the phone and set whatever is there to the state
+    SecureStore.getItemAsync('session').then(sessionToken => {
+      this.setState({
+        session: sessionToken
+      })
+    });
+  }
+  render() {
+    // get our session variable from the state
+    const { session } = this.state
 
-  if (!isLoadingComplete && !props.skipLoadingScreen) {
-    return null;
-  } else {
     return (
       <View style={styles.container}>
         {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-        <NavigationContainer ref={containerRef} initialState={initialNavigationState}>
+        <NavigationContainer>
           <Stack.Navigator>
-            <Stack.Screen name="Root" component={BottomTabNavigator} />
+            {/* Check to see if we have a session, if so continue, if not login */}
+            {session ? (
+              <Stack.Screen name="Root" component={BottomTabNavigator} />
+            ) : (
+                <Stack.Screen
+                  name="Login"
+                  component={LoginScreen}
+                  initialParams={
+                    {
+                      onLoggedIn: () => this.checkIfLoggedIn()
+                    }
+                  }
+                />
+              )}
           </Stack.Navigator>
         </NavigationContainer>
       </View>
