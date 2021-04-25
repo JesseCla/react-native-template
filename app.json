@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "HelloWorld",
-    "slug": "expo-template-tabs",
+    "name": "Jesse_Clapper_Mobile_Curator",
+    "slug": "jessecla-mobile-curator",
     "platforms": [
       "ios",
       "android",
@@ -24,6 +24,7 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "description": "Mobile version of the Curator app by jesscla"
   }
 }
