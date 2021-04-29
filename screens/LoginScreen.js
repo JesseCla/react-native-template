@@ -34,7 +34,12 @@ export default class LoginScreen extends React.Component {
       //If the json.token exists, store and handle it. Else display error.
       if(json.token)
       {
+        console.log(json);
         console.log(`Logging in with session token: ${json.token}`);
+
+        SecureStore.setItemAsync('user', json.userID.toString()).then(() => {
+          this.props.route.params.onLoggedIn();
+        });
 
         SecureStore.setItemAsync('session', json.token).then(() => {
           this.props.route.params.onLoggedIn();
