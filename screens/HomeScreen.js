@@ -118,6 +118,7 @@ export default class HomeScreen extends React.Component {
           <Text style={styles.cardTitle}>{posts.author.email}</Text>
           <View>
             <Text style={styles.cardDescription}>{posts.content}</Text>
+            <Text style={styles.cardDescription}>{posts.createdAt}</Text>
           </View>
         </View>
       );
@@ -150,6 +151,10 @@ export default class HomeScreen extends React.Component {
       .then(
           result => {
             console.log(result);
+            this.setState({
+              modalVisible: false
+            });
+            this.loadPosts();
           },
           error => {
               alert("error!");
@@ -157,6 +162,10 @@ export default class HomeScreen extends React.Component {
       )
       .then(() => this.setState({ redirect: true }));
     }
+  }
+
+  toProfile(){
+
   }
 
   
@@ -167,6 +176,9 @@ export default class HomeScreen extends React.Component {
     return (
       
       <View style={styles.container}>
+        <TouchableOpacity onPress={() => this.toProfile()} style={styles.appButtonContainer}>
+          <Text style={styles.appButtonText}>{"Profile Page"}</Text>
+        </TouchableOpacity>
         <Modal animationType="slide" 
         transparent visible={this.state.modalVisible} 
         presentationStyle="overFullScreen" 
