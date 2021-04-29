@@ -114,7 +114,7 @@ export default class HomeScreen extends React.Component {
   postDisplay(){
     return this.state.posts.map(function(posts, i){
       return(
-        <View key={i}>
+        <View key={i} style={styles.card}>
           <Text style={styles.cardTitle}>{posts.author.email}</Text>
           <View>
             <Text style={styles.cardDescription}>{posts.content}</Text>
@@ -186,9 +186,9 @@ export default class HomeScreen extends React.Component {
           </View>
         </Modal>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <View style={styles.card}>
-            {this.postDisplay()}
-          </View>
+
+        {this.postDisplay()}
+
         </ScrollView>
         <TouchableOpacity onPress={() => this.toggleModal()} style={styles.appButtonContainer}>
           <Text style={styles.appButtonText}>{"Add Post"}</Text>
