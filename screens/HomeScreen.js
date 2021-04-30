@@ -163,11 +163,6 @@ export default class HomeScreen extends React.Component {
       .then(() => this.setState({ redirect: true }));
     }
   }
-
-  toProfile(){
-
-  }
-
   
   //Modal rendering code is sourced from
   //https://www.geeksforgeeks.org/how-to-create-custom-dialog-box-with-text-input-react-native/
@@ -176,9 +171,6 @@ export default class HomeScreen extends React.Component {
     return (
       
       <View style={styles.container}>
-        <TouchableOpacity onPress={() => this.toProfile()} style={styles.appButtonContainer}>
-          <Text style={styles.appButtonText}>{"Profile Page"}</Text>
-        </TouchableOpacity>
         <Modal animationType="slide" 
         transparent visible={this.state.modalVisible} 
         presentationStyle="overFullScreen" 
